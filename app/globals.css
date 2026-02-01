@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+:root {
+  /* Duke Colors */
+  --duke-blue: #012169;
+  --duke-navy: #003366;
+  --duke-royal: #00539B;
+  --duke-success: #339966;
+  --duke-warning: #F09905;
+  --duke-error: #DC3545;
+  --duke-background: #F5F5F5;
+  --duke-text: #262626;
+  --duke-text-light: #666666;
+  --duke-white: #FFFFFF;
+  --duke-border: #E5E5E5;
+
+  /* Semantic Colors */
+  --background: var(--duke-background);
+  --foreground: var(--duke-text);
+  --primary: var(--duke-blue);
+  --primary-foreground: var(--duke-white);
+  --secondary: var(--duke-navy);
+  --secondary-foreground: var(--duke-white);
+  --accent: var(--duke-royal);
+  --accent-foreground: var(--duke-white);
+  --muted: #E5E7EB;
+  --muted-foreground: #6B7280;
+  --card: var(--duke-white);
+  --card-foreground: var(--duke-text);
+  --border: var(--duke-border);
+  --input: var(--duke-border);
+  --ring: var(--duke-royal);
+  --success: var(--duke-success);
+  --warning: var(--duke-warning);
+  --error: var(--duke-error);
+
+  /* Radius */
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-duke-blue: var(--duke-blue);
+  --color-duke-navy: var(--duke-navy);
+  --color-duke-royal: var(--duke-royal);
+  --color-duke-success: var(--duke-success);
+  --color-duke-warning: var(--duke-warning);
+  --color-duke-error: var(--duke-error);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.scan-line {
+  animation: scan 2s linear infinite;
+}
+
+/* QR Code Styles */
+.qr-container {
+  background: white;
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Status Badge Colors */
+.status-available {
+  background: var(--duke-success);
+  color: white;
+}
+
+.status-checked-out {
+  background: var(--duke-royal);
+  color: white;
+}
+
+.status-in-cleaning {
+  background: var(--duke-warning);
+  color: white;
+}
+
+.status-late {
+  background: var(--duke-error);
+  color: white;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--duke-royal);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--duke-navy);
+}
+
+/* Print styles for QR codes */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .qr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    page-break-inside: avoid;
+  }
+}
