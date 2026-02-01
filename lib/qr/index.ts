@@ -8,6 +8,8 @@ export interface ContainerQRData {
 
 export interface UserQRData {
   userId: string;
+  netId?: string;
+  qrCode?: string;
   type: "user";
   version: "1.0";
 }

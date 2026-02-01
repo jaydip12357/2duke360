@@ -24,14 +24,24 @@ import {
   Settings,
 } from "lucide-react";
 
-type Role = "student" | "dining-staff" | "facilities" | "admin";
+type NormalizedRole = "student" | "dining-staff" | "facilities" | "admin";
 
 interface HeaderProps {
   showRoleSwitcher?: boolean;
+  currentRole?: string;
 }
 
-export function Header({ showRoleSwitcher = true }: HeaderProps) {
-  const [currentRole, setCurrentRole] = useState<Role>("student");
+export function Header({ showRoleSwitcher = true, currentRole: propRole }: HeaderProps) {
+  const normalizeRole = (role: string | undefined): "student" | "dining-staff" | "facilities" | "admin" => {
+    if (!role) return "student";
+    const normalized = role.toLowerCase().replace("_", "-");
+    if (normalized === "dining-staff" || normalized === "dining_staff") return "dining-staff";
+    if (normalized === "facilities") return "facilities";
+    if (normalized === "admin") return "admin";
+    return "student";
+  };
+
+  const [currentRole, setCurrentRole] = useState<"student" | "dining-staff" | "facilities" | "admin">(normalizeRole(propRole));
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoClickCount, setLogoClickCount] = useState(0);
   const [shiftKeyHeld, setShiftKeyHeld] = useState(false);
@@ -39,9 +49,13 @@ export function Header({ showRoleSwitcher = true }: HeaderProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const savedRole = localStorage.getItem("dukeReuse360Role") as Role;
-    if (savedRole) {
-      setCurrentRole(savedRole);
+    if (propRole) {
+      setCurrentRole(normalizeRole(propRole));
+    } else {
+      const savedRole = localStorage.getItem("dukeReuse360Role");
+      if (savedRole) {
+        setCurrentRole(normalizeRole(savedRole));
+      }
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,9 +73,10 @@ export function Header({ showRoleSwitcher = true }: HeaderProps) {
     };
   }, []);
 
-  const handleRoleChange = (role: Role) => {
-    setCurrentRole(role);
-    localStorage.setItem("dukeReuse360Role", role);
+  const handleRoleChange = (role: string) => {
+    const normalized = normalizeRole(role);
+    setCurrentRole(normalized);
+    localStorage.setItem("dukeReuse360Role", normalized);
 
     // Navigate to the appropriate dashboard
     switch (role) {
@@ -100,7 +115,7 @@ export function Header({ showRoleSwitcher = true }: HeaderProps) {
     }
   };
 
-  const roleLabels: Record<Role, string> = {
+  const roleLabels: Record<NormalizedRole, string> = {
     student: "Student",
     "dining-staff": "Dining Staff",
     facilities: "Facilities",
@@ -179,7 +194,7 @@ export function Header({ showRoleSwitcher = true }: HeaderProps) {
           {/* Role Switcher & Actions */}
           <div className="hidden md:flex items-center space-x-4">
             {showRoleSwitcher && (
-              <Select value={currentRole} onValueChange={(v) => handleRoleChange(v as Role)}>
+              <Select value={currentRole} onValueChange={(v) => handleRoleChange(v)}>
                 <SelectTrigger className="w-40 bg-[#003366] border-[#003366] text-white">
                   <SelectValue />
                 </SelectTrigger>
@@ -241,7 +256,7 @@ export function Header({ showRoleSwitcher = true }: HeaderProps) {
             {showRoleSwitcher && (
               <div className="px-3 py-2">
                 <p className="text-white/60 text-sm mb-2">Switch Role</p>
-                <Select value={currentRole} onValueChange={(v) => handleRoleChange(v as Role)}>
+                <Select value={currentRole} onValueChange={(v) => handleRoleChange(v)}>
                   <SelectTrigger className="w-full bg-[#012169] border-[#012169] text-white">
                     <SelectValue />
                   </SelectTrigger>
