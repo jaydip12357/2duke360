@@ -1,36 +1,162 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DukeReuse360
+
+Duke University's smart reusable container tracking system for sustainable dining.
+
+## Features
+
+- **Student Dashboard**: Personal QR code, container tracking, impact statistics, gamification
+- **Dining Staff Interface**: QR/RFID scanning, inventory management, batch processing
+- **Facilities Management**: Container lifecycle, QR code generation, maintenance tracking
+- **Admin Analytics**: Real-time insights, environmental impact, financial metrics
+- **Demo Mode**: Auto-demo for hackathon presentations with live activity simulation
+
+## Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **Backend**: Prisma ORM, PostgreSQL
+- **Authentication**: NextAuth.js
+- **QR Codes**: qrcode (generation), html5-qrcode (scanning)
+- **Charts**: Recharts
+- **Deployment**: Railway
+
+## Duke Color Theme
+
+- Primary: Duke Blue `#012169`
+- Secondary: Duke Navy `#003366`
+- Accent: Royal Blue `#00539B`
+- Success: `#339966`
+- Warning: `#F09905`
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+
+- PostgreSQL database
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/jaydip12357/2duke360.git
+cd 2duke360
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your database URL and NextAuth secret
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Push database schema:
+```bash
+npm run db:push
+```
 
-## Learn More
+5. Seed the database with demo data:
+```bash
+npm run db:seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+6. Run the development server:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+/app
+  /api
+    /auth        # NextAuth endpoints
+    /containers  # Container CRUD
+    /users       # User management
+    /scan        # QR/RFID scanning
+    /admin       # Admin endpoints
+    /health      # Health check
+  /student       # Student dashboard & scan
+  /dining-staff  # Staff interface
+  /facilities    # Container management
+  /admin         # Analytics dashboard
+  /demo          # Demo QR codes
+  /presentation  # Auto-demo mode
+  /judges        # Quick tour for judges
+/components
+  /ui            # Base UI components
+  /student       # Student-specific components
+  /staff         # Staff components
+  /shared        # Shared components (QR, RFID, Stats)
+/lib
+  /db            # Prisma client
+  /qr            # QR code utilities
+  /rfid          # RFID simulation
+  /utils         # Helper functions
+/prisma
+  schema.prisma  # Database schema
+  seed.ts        # Demo data seeder
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Pages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Path | Description |
+|------|-------------|
+| `/` | Home page with quick access |
+| `/student/dashboard` | Student QR code, containers, stats |
+| `/student/scan` | QR scanner for checkout/return |
+| `/dining-staff/dashboard` | Staff scanning & inventory |
+| `/dining-staff/scan` | Dual-mode scanner (QR/RFID) |
+| `/facilities/dashboard` | Container lifecycle management |
+| `/admin` | Analytics & user management |
+| `/demo/qr-codes` | Printable demo QR codes |
+| `/presentation` | Auto-demo with live stats |
+| `/judges` | Quick feature tour |
+
+## Demo Mode
+
+Access demo features:
+- Triple-click the Duke logo on home page
+- Press `Ctrl+Shift+D` in admin panel
+- Visit `/demo/qr-codes` for printable QR codes
+- Visit `/presentation` for 2-minute auto demo
+
+## Database Schema
+
+- **User**: Students, staff, facilities, admin
+- **Container**: QR code, RFID tag, status, location
+- **Transaction**: Checkout/return history
+- **Location**: Dining halls and return stations
+- **ImpactStats**: Environmental metrics per user
+
+## Deployment
+
+### Railway
+
+1. Create a new project on Railway
+2. Add PostgreSQL database
+3. Connect your GitHub repository
+4. Set environment variables:
+   - `DATABASE_URL` (auto-set by Railway)
+   - `NEXTAUTH_SECRET`
+   - `NEXTAUTH_URL`
+5. Deploy!
+
+The app includes a health check endpoint at `/api/health`.
+
+## Demo Credentials
+
+After running the seed script:
+- **Admin**: admin@duke.edu / demo123
+- **Staff**: sarah.johnson@duke.edu / demo123
+- **Student**: alex.kim@duke.edu / demo123
+
+## License
+
+MIT
